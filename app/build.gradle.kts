@@ -81,9 +81,11 @@ dependencies {
     implementation("androidx.room:room-ktx:2.5.2")
 
     //Hilt
-
     implementation("com.google.dagger:hilt-android:2.45")
     kapt("com.google.dagger:hilt-android-compiler:2.45")
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:2.45")
+
+    //Gson
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
 
 }
