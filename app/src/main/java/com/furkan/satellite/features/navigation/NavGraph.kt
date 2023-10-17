@@ -1,10 +1,12 @@
-package com.furkan.satellite.features.screens.navigation
+package com.furkan.satellite.features.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.furkan.satellite.features.screens.detail.DetailScreen
+import com.furkan.satellite.features.screens.detail.DetailViewModel
 import com.furkan.satellite.features.screens.main.HomeScreen
 import com.furkan.satellite.features.screens.main.HomeViewModel
 
@@ -23,7 +25,17 @@ fun NavGraph(
             HomeScreen(
                 viewModel = viewModel,
                 onClickItem = {
+                    navController.navigate(NavScreen.DetailScreen.route.plus("/${it}"))
+                }
+            )
+        }
 
+        composable(NavScreen.DetailScreen.routeWithArgument) {
+            val viewModel: DetailViewModel = hiltViewModel()
+            DetailScreen(
+                viewModel = viewModel,
+                onBackPressed = {
+                    navController.popBackStack()
                 }
             )
         }
