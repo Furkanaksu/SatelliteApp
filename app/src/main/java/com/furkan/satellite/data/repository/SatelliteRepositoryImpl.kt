@@ -8,6 +8,7 @@ import com.furkan.satellite.data.local.source.file.FileDataSource
 import com.furkan.satellite.data.local.source.local.LocalDataSource
 import com.furkan.satellite.domain.repository.SatelliteRepository
 import com.furkan.satellite.utils.Constant.SATELLITE_DETAIL_FILE
+import com.furkan.satellite.utils.Constant.SATELLITE_POSITION_FILE
 import com.furkan.satellite.utils.Resource
 import javax.inject.Inject
 
@@ -53,18 +54,15 @@ class SatelliteRepositoryImpl @Inject constructor(
                     }
                 }
             }
+
             is Resource.Failure -> when (val listObject =
                 fileDataSource.getSatellitePosition(fileName)) {
                 is Resource.Success -> Resource.Success(listObject.data?.list)
                 is Resource.Failure -> Resource.Failure(listObject.error)
                 is Resource.Loading -> Resource.Loading()
             }
-            is Resource.Loading -> when (val listObject =
-                fileDataSource.getSatellitePosition(fileName)) {
-                is Resource.Success -> Resource.Success(listObject.data?.list)
-                is Resource.Failure -> Resource.Failure(listObject.error)
-                is Resource.Loading -> Resource.Loading()
-            }
+
+            is Resource.Loading -> Resource.Loading()
         }
     }
 
