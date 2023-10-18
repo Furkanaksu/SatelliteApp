@@ -24,8 +24,8 @@ fun NavGraph(
             val viewModel: HomeViewModel = hiltViewModel()
             HomeScreen(
                 viewModel = viewModel,
-                onClickItem = {
-                    navController.navigate(NavScreen.DetailScreen.route.plus("/${it}"))
+                onClickItem = { id, name ->
+                    navController.navigate(NavScreen.DetailScreen.route.plus("/${id}/${name}"))
                 }
             )
         }

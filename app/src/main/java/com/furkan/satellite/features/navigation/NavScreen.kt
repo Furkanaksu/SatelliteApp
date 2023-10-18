@@ -7,7 +7,8 @@ sealed class NavScreen(val route: String) {
 
     object DetailScreen : NavScreen("detail"){
         const val id: String = "id"
-        val routeWithArgument: String = route.plus("/{$id}")
+        const val name: String = "name"
+        val routeWithArgument: String = route.plus("/{$id}/{$name}")
     }
 
 }
