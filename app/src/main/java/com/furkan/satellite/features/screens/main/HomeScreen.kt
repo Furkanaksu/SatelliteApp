@@ -1,7 +1,5 @@
 package com.furkan.satellite.features.screens.main
 
-import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -18,15 +16,13 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Divider
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import com.furkan.satellite.data.model.Satellite
 import com.furkan.satellite.features.components.LoadingBar
 import com.furkan.satellite.features.components.SearchBar
@@ -35,10 +31,16 @@ import com.furkan.satellite.ui.theme.Colors
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
-    onClickItem : (String) -> Unit,
+    onClickItem : (String, String) -> Unit,
 )
 {
     val viewState by viewModel.uiState.collectAsState()
+
+
+    LaunchedEffect(Unit){
+        viewModel.getSatelliteList()
+    }
+
 
     Content(
         viewState = viewState,
@@ -53,11 +55,11 @@ fun HomeScreen(
 fun Content(
     onChangeText : (String) -> Unit,
     onClearSearch : () -> Unit,
-    onClickItem : (String) -> Unit,
+    onClickItem : (String, String) -> Unit,
     viewState : HomeViewState
 ){
 
-    LoadingBar(isDisplayed = viewState.isLoading)
+    viewState.isLoading.let { LoadingBar(isDisplayed = it) }
 
     Column(
         modifier = Modifier
@@ -84,7 +86,7 @@ fun Content(
                     StarShipItem(
                         data = item,
                         onClickItem = {
-                            onClickItem(it.id.toString())
+                            onClickItem(it.id.toString(), it.name)
                         },
                         isLastItem = index == viewState.data?.size?.minus(1)
                     )

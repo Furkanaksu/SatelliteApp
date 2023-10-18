@@ -1,6 +1,6 @@
 package com.furkan.satellite.features.screens.main
 
-import androidx.lifecycle.ViewModel
+import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.viewModelScope
 import com.furkan.satellite.data.model.Satellite
 import com.furkan.satellite.domain.usecase.satellites.SatelliteListUseCase
@@ -12,12 +12,8 @@ import com.furkan.satellite.utils.Constant
 import com.furkan.satellite.utils.Constant.SATELLITE_FILE
 import com.furkan.satellite.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -29,11 +25,6 @@ class HomeViewModel @Inject constructor(
 ) : BaseViewModel<HomeViewState, HomeViewEvent>() {
 
     private lateinit var textChangeCountDownJob: Job
-
-
-    init {
-        getSatelliteList()
-    }
 
 
     override fun createInitialState(): HomeViewState = HomeViewState()
@@ -98,8 +89,7 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
-    private fun getSatelliteList() {
+    fun getSatelliteList() {
         viewModelScope.launch {
             satelliteListUseCase.invoke(SatelliteListUseCase.SatelliteListParams(SATELLITE_FILE)).collect { state->
                 when (state) {
